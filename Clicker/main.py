@@ -1,5 +1,6 @@
 import pygame
 import clickobj
+import clickup
 
 class Game:
     def __init__(self):
@@ -10,6 +11,9 @@ class Game:
         self.clickobj = clickobj.clickobj(self, 100, 150, 300, 300)
         self.coins = 0
         self.font = pygame.font.SysFont("Misc fixed", 64)
+        self.clickup = clickup.clickup(self, 700, 50, 275, 50, pygame.image.load("img/Clickup.png"))
+        self.coins_per_click = 1
+        self.price = 10
         self.run()
 
     def run(self):
@@ -19,15 +23,21 @@ class Game:
                     self.running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if self.clickobj.is_clicked(event.pos):
-                        self.coins += 1
-                        
-                        
+                        self.coins += self.coins_per_click
+                    if self.clickup.is_clicked(event.pos) and self.coins >= self.price:
+                        self.coins_per_click += 1
+                        self.coins -= self.price
+                        self.price = int(self.price * 1.5)
 
             self.screen.fill((0, 0, 0))
             self.clickobj.update()
+            self.clickup.update()
             self.coin_text = self.font.render(f"coins: {self.coins}", True, (255, 255, 255))
             self.coin_rect = self.coin_text.get_rect(topleft=(175, 50))
             self.screen.blit(self.coin_text, self.coin_rect)
+            self.price_text = self.font.render(f"upgrade cost: {self.price}", True, (255, 255, 255))
+            self.price_rect = self.price_text.get_rect(topleft=(175, 100))
+            self.screen.blit(self.price_text, self.price_rect)
 
 
 
