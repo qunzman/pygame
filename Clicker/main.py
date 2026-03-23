@@ -18,6 +18,9 @@ class Game:
         self.price = 10
         self.click_multiplier = 1.15
         self.lemonade_stand = lemonade_stand.LemonadeStand(self, 700, 100, 300, 50, pygame.image.load("img/Lemonade_stand.png"))
+        self.Lemonadeevent = pygame.USEREVENT + 1
+        pygame.time.set_timer(self.Lemonadeevent, 1000)
+        self.lemonadefarms = 0
         self.run()
 
     def format_zahl(self, n):
@@ -50,7 +53,15 @@ class Game:
                         self.coins_per_click *= self.click_multiplier
                         self.coins -= self.price
                         self.price = int(self.price * 2.5)
-
+                    if self.lemonade_stand.is_clicked(event.pos) and self.coins >= 200:
+                        self.lemonadefarms += 1
+                        self.coins -= 200
+            
+            if self.lemonadefarms > 0:
+                for lemonadefarm in range(self.lemonadefarms):
+                    if event.type == self.Lemonadeevent:
+                        self.coins += 1
+                        
             if self.coins_per_click >= 2:
                 self.click_multiplier = 1.25
 
