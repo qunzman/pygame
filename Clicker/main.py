@@ -17,6 +17,25 @@ class Game:
         self.price = 10
         self.run()
 
+    def format_zahl(n):
+        if n >= 1_000_000_000:
+            wert = n / 1_000_000_000
+            suffix = "B"
+        elif n >= 1_000_000:
+            wert = n / 1_000_000
+            suffix = "M"
+        elif n >= 1_000:
+            wert = n / 1_000
+            suffix = "k"
+        else:
+            return str(n)
+    
+    # Zeigt .1 nur wenn nötig
+        if wert == int(wert):
+            return f"{int(wert)}{suffix}"
+        else:
+            return f"{wert:.1f}{suffix}"
+  
     def run(self):
         while self.running:
             for event in pygame.event.get():
@@ -36,7 +55,8 @@ class Game:
             self.coin_text = self.font_coins.render(f"coins: {int(self.coins)}", True, (255, 255, 255))
             self.coin_rect = self.coin_text.get_rect(topleft=(175, 50))
             self.screen.blit(self.coin_text, self.coin_rect)
-            self.price_text = self.font_costs.render(f"{self.price}", True, (255, 255, 255))
+            self.price1 = self.format_zahl(self.price)
+            self.price_text = self.font_costs.render(f"{self.price1}", True, (255, 255, 255))
             self.price_rect = self.price_text.get_rect(topleft=(930, 60))
             self.screen.blit(self.price_text, self.price_rect)
 
