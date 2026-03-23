@@ -10,7 +10,8 @@ class Game:
         self.running = True
         self.clickobj = clickobj.clickobj(self, 100, 150, 300, 300)
         self.coins = 0
-        self.font = pygame.font.SysFont("Misc fixed", 64)
+        self.font_coins = pygame.font.SysFont("Misc fixed", 64)
+        self.font_costs = pygame.font.SysFont("Misc fixed", 32)
         self.clickup = clickup.clickup(self, 700, 50, 275, 50, pygame.image.load("img/Clickup.png"))
         self.coins_per_click = 1
         self.price = 10
@@ -25,18 +26,18 @@ class Game:
                     if self.clickobj.is_clicked(event.pos):
                         self.coins += self.coins_per_click
                     if self.clickup.is_clicked(event.pos) and self.coins >= self.price:
-                        self.coins_per_click += 1
+                        self.coins_per_click += self.coins_per_click * 1.15
                         self.coins -= self.price
                         self.price = int(self.price * 1.5)
 
             self.screen.fill((0, 0, 0))
             self.clickobj.update()
             self.clickup.update()
-            self.coin_text = self.font.render(f"coins: {self.coins}", True, (255, 255, 255))
+            self.coin_text = self.font_coins.render(f"coins: {int(self.coins)}", True, (255, 255, 255))
             self.coin_rect = self.coin_text.get_rect(topleft=(175, 50))
             self.screen.blit(self.coin_text, self.coin_rect)
-            self.price_text = self.font.render(f"upgrade cost: {self.price}", True, (255, 255, 255))
-            self.price_rect = self.price_text.get_rect(topleft=(175, 100))
+            self.price_text = self.font_costs.render(f"{self.price}", True, (255, 255, 255))
+            self.price_rect = self.price_text.get_rect(topleft=(930, 60))
             self.screen.blit(self.price_text, self.price_rect)
 
 
