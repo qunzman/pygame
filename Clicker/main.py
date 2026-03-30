@@ -8,7 +8,9 @@ class Game:
         self.screen = pygame.display.set_mode((1000, 600))
         self.clock = pygame.time.Clock()
         self.running = True
-        self.clickobj = clickobj.clickobj(self, 480, 300, 300)
+        self.coinimg = pygame.image.load("img/coin.png")
+        self.coinimage = pygame.transform.scale(self.coinimg, (70, 70))
+        self.clickobj = clickobj.clickobj(self, 480, 300, 400, pygame.image.load("img/coin.png"))
         self.coins = 0
         self.font_coins = pygame.font.SysFont("Misc fixed", 64)
         self.font_costs1 = pygame.font.SysFont("Misc fixed", 28)
@@ -68,16 +70,21 @@ class Game:
             if self.coins_per_click >= 2:
                 self.click_multiplier = 1.25
 
+        
+
             self.screen.fill((0, 0, 0))
             self.clickobj.update()
             self.clickup.update()
             self.lemonade_stand.update()
+
+            self.screen.blit(self.coinimage, (400, 35))
+            
             if self.coins > 1000:
                 self.coins1 = self.format_zahl(self.coins)
             else:
                 self.coins1 = int(self.coins)
-            self.coin_text = self.font_coins.render(f"Coins: {self.coins1}", True, (255, 255, 255))
-            self.coin_rect = self.coin_text.get_rect(topleft=(330, 50))
+            self.coin_text = self.font_coins.render(f"{self.coins1}", True, (255, 255, 255))
+            self.coin_rect = self.coin_text.get_rect(topleft=(470, 50))
             self.screen.blit(self.coin_text, self.coin_rect)
 
             self.clickup_price1 = self.format_zahl(self.clickup_price)
