@@ -1,9 +1,9 @@
 import pygame
 
-class clickup:
-    def __init__(self, game, x, y, width, height, image):
+class upgrades:
+    def __init__(self, game, y, width, height, image):
         self.game = game
-        self.x = x
+        self.x = 700
         self.y = y
         self.width = width
         self.height = height
