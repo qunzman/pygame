@@ -10,12 +10,14 @@ class Game:
         self.running = True
         self.coinimg = pygame.image.load("img/coin.png")
         self.coinimage = pygame.transform.scale(self.coinimg, (70, 70))
+        self.coinimage2 = pygame.transform.scale(self.coinimg, (30, 30))
         self.clickobj = clickobj.clickobj(self, 480, 300, 400, pygame.image.load("img/coin.png"))
         self.coins = 0
         self.font_coins = pygame.font.SysFont("Misc fixed", 64)
         self.font_costs1 = pygame.font.SysFont("Misc fixed", 28)
         self.font_farmdescr = pygame.font.SysFont("Misc fixed", 24)
         self.font_coinpersec = pygame.font.SysFont("Misc fixed", 18)
+        self.font_farmstats = pygame.font.SysFont("Misc fixed", 26)
         self.clickup = Upgrades.upgrades(self, 50, 300, 50, pygame.image.load("img/Clickup.png"))
         self.coins_per_click = 1
         self.clickup_price = 10
@@ -23,6 +25,8 @@ class Game:
         self.click_multiplier = 1.15
         self.lemonade_stand = Upgrades.upgrades(self, 100, 300, 50, pygame.image.load("img/Lemonade_stand.png"))
         self.lemonadestands = 0
+        self.lemonadestandmultiplier = 0.5
+        self.lemonadestand_price_multiplier = 0
         self.farmevent = pygame.USEREVENT + 1
         pygame.time.set_timer(self.farmevent, 1000)
         self.Coinspersec = 0
@@ -60,9 +64,14 @@ class Game:
                         self.coins -= self.clickup_price
                         self.clickup_price = int(self.clickup_price * 2.5)
                     if self.lemonade_stand.is_clicked(event.pos) and self.coins >= self.lemonadestand_price:
-                        self.Coinspersec += 0.5
+                        self.Coinspersec += self.lemonadestandmultiplier
+                        self.lemonadestand_price += self.lemonadestand_price_multiplier
                         self.lemonadestands += 1
                         self.coins -= self.lemonadestand_price
+                        if self.lemonadestands == 20:
+                            self.lemonadestandmultiplier = 1
+                            self.lemonadestand_price_multiplier = 5
+
                 
                 elif event.type == self.farmevent:
                     self.coins += self.Coinspersec
@@ -78,6 +87,9 @@ class Game:
             self.lemonade_stand.update()
 
             self.screen.blit(self.coinimage, (400, 35))
+
+            self.screen.blit(self.coinimage2, (920, 107))
+            self.screen.blit(self.coinimage2, (920, 57))
             
             if self.coins > 1000:
                 self.coins1 = self.format_zahl(self.coins)
@@ -126,6 +138,10 @@ class Game:
                 self.lemonadestand_price_text = self.font_costs1.render(f"{self.lemonadestand_price1}", True, (255, 0, 0))
             self.lemonadestand_price_rect = self.lemonadestand_price_text.get_rect(topleft=(950, 113))
             self.screen.blit(self.lemonadestand_price_text, self.lemonadestand_price_rect)
+
+            self.lemonadefarms_text = self.font_farmstats.render(f"Lemonade stands: {self.lemonadestands}", True, (255, 255, 255))
+            self.lemonadefarms_rect = self.lemonadefarms_text.get_rect(topleft=(20, 210))
+            self.screen.blit(self.lemonadefarms_text, self.lemonadefarms_rect)
 
             pygame.display.update() 
             self.clock.tick(60)  
