@@ -67,13 +67,13 @@ class Game:
                     if self.clickup.is_clicked(event.pos) and self.coins >= self.clickup_price:
                         self.coins_per_click *= self.click_multiplier
                         self.coins -= self.clickup_price
-                        self.clickup_price = int(self.clickup_price * 2.5)
+                        self.clickup_price = int(self.clickup_price * 1.5)
                     if self.lemonade_stand.is_clicked(event.pos) and self.coins >= self.lemonadestand_price:
                         self.Coinspersec += self.lemonadestandmultiplier
                         self.lemonadestand_price += self.lemonadestand_price_multiplier
                         self.lemonadestands += 1
                         self.coins -= self.lemonadestand_price
-                        if self.lemonadestands == 20:
+                        if self.lemonadestands == 10:
                             self.lemonadestandmultiplier = 1
                             self.lemonadestand_price_multiplier = 5
                     if self.icestand.is_clicked(event.pos) and self.coins >= self.icestand_price:
@@ -81,9 +81,8 @@ class Game:
                         self.icestand_price += self.icestand_price_multiplier
                         self.icestands += 1
                         self.coins -= self.icestand_price
-                        if self.icestands == 20:
-                            self.icestand_multiplier = 1
-                            self.icestand_price_multiplier = 5
+                        if self.icestands == 10:
+                            self.icestand_price_multiplier = 50
 
                 elif event.type == self.farmevent:
                     self.coins += self.Coinspersec
@@ -141,7 +140,7 @@ class Game:
             self.click_farmdesc_text = self.font_farmdescr.render("Lemonade Stand", True, (255, 255, 255))
             self.click_farmdesc_rect = self.click_farmdesc_text.get_rect(topleft=(750, 110))
             self.screen.blit(self.click_farmdesc_text, self.click_farmdesc_rect)
-            self.click_farmdesc_text = self.font_coinpersec.render("Coins per Second + 0.5", True, (255, 255, 255))
+            self.click_farmdesc_text = self.font_coinpersec.render(f"Coins per Second + {self.lemonadestandmultiplier:.1f}", True, (255, 255, 255))
             self.click_farmdesc_rect = self.click_farmdesc_text.get_rect(topleft=(750, 125))
             self.screen.blit(self.click_farmdesc_text, self.click_farmdesc_rect)            
             self.lemonadestand_price1 = self.format_zahl(self.lemonadestand_price)
@@ -159,7 +158,7 @@ class Game:
             self.click_farmdesc_text = self.font_farmdescr.render("Icestand", True, (255, 255, 255))
             self.click_farmdesc_rect = self.click_farmdesc_text.get_rect(topleft=(750, 157))
             self.screen.blit(self.click_farmdesc_text, self.click_farmdesc_rect)
-            self.icestand_farmdesc_text = self.font_coinpersec.render("Coins per Second + 1", True, (255, 255, 255))
+            self.icestand_farmdesc_text = self.font_coinpersec.render(f"Coins per Second + {self.icestand_multiplier:.1f}", True, (255, 255, 255))
             self.icestand_farmdesc_rect = self.icestand_farmdesc_text.get_rect(topleft=(750, 175))
             self.screen.blit(self.icestand_farmdesc_text, self.icestand_farmdesc_rect)           
             self.icestand_price1 = self.format_zahl(self.icestand_price)
